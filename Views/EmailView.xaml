@@ -1,0 +1,60 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EmailGenerator.Views"
+        xmlns:ViewModels="clr-namespace:EmailGenerator.ViewModels" x:Class="EmailGenerator.Views.EmailView"
+        mc:Ignorable="d"
+        Title="Email genereren" Height="493" Width="800">
+	<Window.Resources>
+		<Style TargetType="{x:Type TextBox}" x:Key="ToolTipError">
+			<Style.Triggers>
+				<Trigger Property="Validation.HasError" Value="True">
+					<Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
+	</Window.Resources>
+	<Grid Margin="5">
+
+		<Grid.DataContext>
+			<ViewModels:EmailViewModel/>
+		</Grid.DataContext>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Grid.Column="0" Margin="5,5,5,5">SMTP Server:</Label>
+		<TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=EmailModel.SMTPServer}" Style="{StaticResource ToolTipError}" />
+		<Label Grid.Row="1" Grid.Column="0" Margin="5,5,5,5">From:</Label>
+		<TextBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=EmailModel.EmailFrom}" Style="{StaticResource ToolTipError}" />
+		<Label Grid.Row="2" Grid.Column="0" Margin="5,5,5,5">To:</Label>
+		<TextBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=EmailModel.EmailTo}" Style="{StaticResource ToolTipError}" />
+		<Label Grid.Row="3" Grid.Column="0" Margin="5,5,5,5">Subject:</Label>
+		<TextBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=EmailModel.Subject}" Style="{StaticResource ToolTipError}" ToolTip="Use {0} for the index." />
+        <Label Grid.Row="4" Grid.Column="0" Margin="5,5,5,5">Message:</Label>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=EmailModel.Message}" Style="{StaticResource ToolTipError}" />
+        <StackPanel Orientation="Vertical" Grid.Row="5" Grid.Column="0" Margin="5" >
+			<Label Margin="5">Attachments:</Label>
+			<Button Command="{Binding AddAttachtment}" Margin="3">Add attachment</Button>
+			<Button Command="{Binding RemoveAttachtment}" Margin="3">Remove attachment</Button>
+		</StackPanel>
+		<ListBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding EmailModel.AttachmentFiles}" SelectedItem="{Binding EmailModel.SelectedAttachment}"  Margin="5" />
+		<Label Grid.Row="6" Grid.Column="0" Margin="5,5,5,5">Number of emails:</Label>
+		<TextBox Grid.Row="6" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=EmailModel.NumberOfMails}" Style="{StaticResource ToolTipError}" />
+		<Button Grid.Row="7" Grid.Column="1" Margin="5,5,5,5" Width="100" HorizontalAlignment="Right" Command="{Binding SendMails}" >Send Mails</Button>
+	</Grid>
+</Window>
